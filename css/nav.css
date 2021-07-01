@@ -21,3 +21,13 @@ nav {
   margin-left: auto;
   text-align: right;
 }
+.navbar-links{
+  display:inline-block;
+}
+#nav-submit, #nav-favorites, #nav-my-stories{
+  border-left: 2px solid black;
+  text-align: center;
+  margin: 0 3px;
+  padding: 0 10px;
+  font-size: 0.85rem;
+}

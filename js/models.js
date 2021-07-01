@@ -2,6 +2,7 @@
 
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
 
+
 /******************************************************************************
  * Story: a single story in the system
  */
@@ -66,15 +67,43 @@ class StoryList {
     return new StoryList(stories);
   }
 
-  /** Adds story data to API, makes a Story instance, adds it to story list.
-   * - user - the current instance of User who will post the story
-   * - obj of {title, author, url}
+  /** addStory  
+   * Method that adds story data to API, makes a Story instance, adds it to story list.
+   * - @param user - the current instance of User who will post the story
+   * - @param newStory obj of {title, author, url}
    *
-   * Returns the new Story instance
+   * @returns {Story} Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
-    // UNIMPLEMENTED: complete this function!
+  async addStory(user, newStory) {
+    
+    const storiesURL = BASE_URL+'/stories'
+    
+	// make a POST request to API 
+    //const token = user.token
+	//NOTE: used for testing  PURPOSE
+	const token = user.token;
+    const response = await axios({
+		url:storiesURL, 
+		method: "POST",
+		data:{token, story:newStory}
+	});
+
+    // make a Story instance
+		const storyDataPosted = response.data.story;
+		let story = new Story({
+				storyId: storyDataPosted.storyId,
+				story: storyDataPosted.title,
+				author: storyDataPosted.author, 
+				title:storyDataPosted.title,
+				url: storyDataPosted.url,
+				username: storyDataPosted.username,
+				createdAt: storyDataPosted.createdAt
+			});
+    // add it to story list
+	this.stories.push(story);
+	// return story instance
+	return story;
   }
 }
 
