@@ -96,9 +96,23 @@ function saveUserCredentialsInLocalStorage() {
 	}
 }
 
-/******************************************************************************
- * General UI stuff about users
- */
+
+// Handling Favorites on Login 
+
+// function that checks if storyList story is on user's favorites by using the story ID,
+// story on the story List will update to true. 
+
+function updateFavoritesList() {
+	storyList.stories.forEach(story => {
+		currentUser.favorites.forEach(faveStory => {
+			if(faveStory.storyId === story.storyId){
+				story.favorite = true;
+				updateUserFavoritesUI(story);	
+			}
+		});
+	});
+}
+
 
 /** When a user signs up or registers, we want to set up the UI for them:
  *
@@ -115,18 +129,31 @@ function updateUIOnUserLogin() {
 	$loginForm.hide();
 	$signupForm.hide();
 	updateNavOnLogin();
+	updateFavoritesList();
 }
 
-// function that checks if storyList story is on user's favorites by using the story ID,
-// story on the story List will update to true. 
-
-function updateFavoritesOnLogin() {
-	storyList.stories.forEach(story => {
-		currentUser.favorites.forEach(faveStory => {
-			if(faveStory.id === story.id){
-				story.favorite = true;
-			}
-		})
-
-	})
+// Upon start upon start up, sets favorite stars to solid 
+function updateUserFavoritesUI(story) {
+	//console.debug('updateFavoritesUI');
+	// check each storie list
+	// $(`#${story.storyId} i`).attr("class","fas fa-star");
+	console.log('WE are here ')
+	if (story.favorite === false){
+		$(`#${story.storyId} i`).attr("class", "far fa-star")
+	}else{
+		$(`#${story.storyId} i`).attr("class", "fas fa-star")
+	}
 }
+
+
+
+
+$($allStoriesList).on('click','.favorite-star',  async function(evt) {
+	const id = $(evt.target).attr('id');
+	// search for story containign story ID in story list
+	let storyObj = storyList.stories.find( story => story.storyId === id);
+	storyObj.favorite === false ? 
+	currentUser.setFavorite(storyObj) :
+	currentUser.deleteFavorite(storyObj);
+	updateFavoritesList()
+})

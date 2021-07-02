@@ -20,11 +20,14 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-	// console.debug("generateStoryMarkup", story);
-
+	//console.debug("generateStoryMarkup", story);
+	// add stars 
+	let star = `<i id=${story.storyId} class="favorite-star far fa-star"></i>`
+	
 	const hostName = story.getHostName();
 	return $(`
 			<li id="${story.storyId}">
+				${star}
 				<a href="${story.url}" target="a_blank" class="story-link">
 					${story.title}
 				</a>
@@ -94,25 +97,3 @@ async function addSubmitStoryToPage(){
 	$allStoriesList.prepend($story);
 }
 
-
-/** SECTION to Handle Favorites */
-
-$navFavorites.on('click',displayFavoritesPage);
-
-/// Controller function callback
-
-function displayFavoritesPage() {
-	$allStoriesList.empty();
-	console.debug('navFavorites')
-
-	if(currentUser.favorites.length === 0){
-		displayNoFavorites();
-	}else{
-		displayFavorites();
-	}
-}
-
-
-function displayFavorites(){
-	
-}

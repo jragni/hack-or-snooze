@@ -44,10 +44,42 @@ $navbarLinks.on('click','#nav-submit',navSubmitClick);
  */
 
 function navSubmitClick(evt) {
-  
+  putStoriesOnPage();
   // unhide story form, if already on story form, keep it displayed
   let isStoryFormHidden = $('#story-form').is(':hidden');
+  updateFavoritesList();
   if (isStoryFormHidden){  
-    $storyForm.toggle(".hidden")
+    $storyForm.toggle(".hidden");
   }
 }
+
+/** SECTION to Handle Favorites */
+$navFavorites.on('click',displayFavoritesPage);
+
+
+/// Favorites Controller function callback
+
+function displayFavoritesPage() {
+	$allStoriesList.empty();
+	console.debug('navFavorites')
+  updateFavoritesList();
+  $('#story-form').hide();
+	if(currentUser.favorites.length === 0){
+		displayNoFavorites();
+	}else{
+		displayFavorites();
+	}
+}
+
+function displayFavorites() {
+	currentUser.favorites.forEach(story => {
+		const $story = generateStoryMarkup(story);
+		$allStoriesList.prepend($story);
+    updateFavoritesList();
+	})
+}
+
+function displayNoFavorites() {
+	$allStoriesList.prepend("<h1> No favorites added!</h1")
+}
+

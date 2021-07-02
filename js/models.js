@@ -222,7 +222,6 @@ class User {
 	 */
 
 	async setFavorite(story){
-		
 		// iniitialize axios params
 		const username = currentUser.username;
 		const storyId = story.storyId;
@@ -236,8 +235,8 @@ class User {
 			params:{token}
 		});
 		console.debug('setFavorite:',response.data.message);
-
-		currentUser = new User(response.data.user);
+		updateUserFavoritesUI(story);
+		currentUser = new User(response.data.user, currentUser.loginToken);
 
 	}
 	/** deleteFavorite
@@ -260,19 +259,10 @@ class User {
 			params:{token}
 		});
 		console.debug('deleteFavorite:',response.data.message);
-
-		currentUser = new User(response.data.user)
-		// // remove story to current user favorites
-		// let storyIdx;
-		// // find the index of story to remove from favorites 
-		// currentUser.favorites.forEach( (faveStory, idx) => {
-		// 	if(story.storyId === faveStory.id){
-		// 		storyIdx = idx;
-		// 	}
-		// });
-		// // remove it from the array
-		// currentUser.favorites.splice(storyIdx, 1);
-
+		updateUserFavoritesUI(story);
+		// update current user 
+		currentUser = new User(response.data.user, currentUser.loginToken);
+		
 	}
 }
 

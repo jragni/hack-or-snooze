@@ -29,6 +29,9 @@ a:hover {
   text-decoration: underline;
 }
 
+.fa-star:hover{
+  color: orange;
+}
 
 /* Site layout */
 
