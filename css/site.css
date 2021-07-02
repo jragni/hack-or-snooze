@@ -106,6 +106,10 @@ form > hr {
   width: 70px;
 }
 
+#story-form {
+  border-bottom: lightgray 1px solid;
+}
+
 
 /* responsive queries for tightening things up for mobile. */
 

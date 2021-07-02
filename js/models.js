@@ -20,6 +20,7 @@ class Story {
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
+    this.favorite = false;
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -82,7 +83,7 @@ class StoryList {
 	// make a POST request to API 
     //const token = user.token
 	//NOTE: used for testing  PURPOSE
-	const token = user.token;
+	const token = user.loginToken;
     const response = await axios({
 		url:storiesURL, 
 		method: "POST",
@@ -90,18 +91,11 @@ class StoryList {
 	});
 
     // make a Story instance
-		const storyDataPosted = response.data.story;
-		let story = new Story({
-				storyId: storyDataPosted.storyId,
-				story: storyDataPosted.title,
-				author: storyDataPosted.author, 
-				title:storyDataPosted.title,
-				url: storyDataPosted.url,
-				username: storyDataPosted.username,
-				createdAt: storyDataPosted.createdAt
-			});
-    // add it to story list
-	this.stories.push(story);
+	const storyDataPosted = response.data.story;
+	let story = new Story(storyDataPosted);
+
+  // add it to the top of story list
+	this.stories.unshift(story);
 	// return story instance
 	return story;
   }
@@ -114,8 +108,8 @@ class StoryList {
 
 class User {
   /** Make user instance from obj of user data and a token:
-   *   - {username, name, createdAt, favorites[], ownStories[]}
-   *   - token
+   *   - @param {object} user {username, name, createdAt, favorites[], ownStories[]}
+   *   - @param {string} token 
    */
 
   constructor({
@@ -221,3 +215,26 @@ class User {
     }
   }
 }
+
+
+/******TESTING AREA 
+ * 
+ *  used for debugging when not logged in
+//  */
+// let me = new User({
+//   "username": "rayIzLeet",
+//   "name": "Ray",
+//   "createdAt": "2021-07-01T16:52:37.609Z",
+//   "favorites": [],
+//   "ownStories": [
+//     {
+//       "storyId": "8dd47213-414b-4699-9b74-9046fbc7d7d4",
+//       "title": "somewhere",
+//       "author": "something",
+//       "url": "http://www.google.com",
+//       "username": "rayIzLeet",
+//       "createdAt": "2021-07-01T22:25:14.549Z"
+//     }
+//   ]},
+//    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJheUl6TGVldCIsImlhdCI6MTYyNTE3MjU1Nn0.Ij9jwHIFQ-NJphJhDnA2RKEk908bYxg5ijz3By8Hvt8"
+// )

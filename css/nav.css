@@ -21,7 +21,7 @@ nav {
   margin-left: auto;
   text-align: right;
 }
-.navbar-links{
+.main-nav-links{
   display:inline-block;
 }
 #nav-submit, #nav-favorites, #nav-my-stories{

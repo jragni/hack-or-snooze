@@ -34,3 +34,20 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+$navbarLinks.on('click','#nav-submit',navSubmitClick);
+
+/** navSubmitClick 
+ *  function that is called when users click on the navbar's submit. The function displays prepends the new story form onto the story list.
+ *  
+ * @param {evt} evt --- event that occurs on click
+ */
+
+function navSubmitClick(evt) {
+  
+  // unhide story form, if already on story form, keep it displayed
+  let isStoryFormHidden = $('#story-form').is(':hidden');
+  if (isStoryFormHidden){  
+    $storyForm.toggle(".hidden")
+  }
+}

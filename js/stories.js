@@ -38,15 +38,59 @@ function generateStoryMarkup(story) {
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
-  console.debug("putStoriesOnPage");
+    console.debug("putStoriesOnPage");
 
-  $allStoriesList.empty();
+    $allStoriesList.empty();
 
-  // loop through all of our stories and generate HTML for them
-  for (let story of storyList.stories) {
-    const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
-  }
+    // loop through all of our stories and generate HTML for them
+    for (let story of storyList.stories) {
+        const $story = generateStoryMarkup(story);
+        $allStoriesList.append($story);
+    }
 
-  $allStoriesList.show();
+    $allStoriesList.show();
 }
+
+$storyForm.on('submit', addStoryToListAndHideStoryForm);
+
+/** addStoryToListAndHidStoryForm
+ * Description: callback function for when user submits the story form. The function
+ * will retreive the values from the inputs (author, title, url) and will add the story
+ * to the story list and DOM and remove form upon submission.
+ */
+
+async function addStoryToListAndHideStoryForm(){
+  addStoryToList();
+  addStoryToPage();
+  $storyForm.hide();
+}
+
+/** addStoryToList
+ * function that retreives values from the new story form and adds it to the story list.
+ */
+async function addStoryToList(){
+  
+    // Get story data from form
+    let newTitle = $('#create-title').val();
+    let newAuthor = $('#create-author').val();
+    let newURL = $('#create-url').val();
+    // Add story to story list
+    await storyList.addStory(
+        currentUser, /* using me in place of current user (see user.js for me)*/
+        {
+            title: newTitle,
+            author: newAuthor,
+            url: newURL
+        }
+    );  
+}
+
+/** addStoryToPage
+ * Adds story to the DOM
+ */
+async function addStoryToPage(){
+  const $story = generateStoryMarkup(storyList.stories[0]);
+  $allStoriesList.prepend($story);
+}
+
+
