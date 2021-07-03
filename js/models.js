@@ -235,9 +235,8 @@ class User {
 			params:{token}
 		});
 		console.debug('setFavorite:',response.data.message);
-		updateUserFavoritesUI(story);
 		currentUser = new User(response.data.user, currentUser.loginToken);
-
+		return currentUser;
 	}
 	/** deleteFavorite
 	 * Description: deleteFavorite is a function that takes in the Story Instance
@@ -259,10 +258,10 @@ class User {
 			params:{token}
 		});
 		console.debug('deleteFavorite:',response.data.message);
-		updateUserFavoritesUI(story);
 		// update current user 
 		currentUser = new User(response.data.user, currentUser.loginToken);
 		
+		return currentUser;
 	}
 }
 

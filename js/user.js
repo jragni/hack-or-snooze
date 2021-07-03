@@ -103,16 +103,15 @@ function saveUserCredentialsInLocalStorage() {
 // story on the story List will update to true. 
 
 function updateFavoritesList() {
+	// check every story on the story list to find every favorite 
 	storyList.stories.forEach(story => {
 		currentUser.favorites.forEach(faveStory => {
 			if(faveStory.storyId === story.storyId){
 				story.favorite = true;
-				updateUserFavoritesUI(story);	
 			}
 		});
 	});
 }
-
 
 /** When a user signs up or registers, we want to set up the UI for them:
  *
@@ -130,30 +129,69 @@ function updateUIOnUserLogin() {
 	$signupForm.hide();
 	updateNavOnLogin();
 	updateFavoritesList();
+	updateFavoritesListUI();
 }
 
-// Upon start upon start up, sets favorite stars to solid 
-function updateUserFavoritesUI(story) {
-	//console.debug('updateFavoritesUI');
-	// check each storie list
-	// $(`#${story.storyId} i`).attr("class","fas fa-star");
-	console.log('WE are here ')
-	if (story.favorite === false){
-		$(`#${story.storyId} i`).attr("class", "far fa-star")
-	}else{
-		$(`#${story.storyId} i`).attr("class", "fas fa-star")
-	}
-}
-
-
-
+// TO DO: work on fixing the star issue
 
 $($allStoriesList).on('click','.favorite-star',  async function(evt) {
 	const id = $(evt.target).attr('id');
 	// search for story containign story ID in story list
 	let storyObj = storyList.stories.find( story => story.storyId === id);
-	storyObj.favorite === false ? 
-	currentUser.setFavorite(storyObj) :
-	currentUser.deleteFavorite(storyObj);
-	updateFavoritesList()
+	// if the current story is not favorite, then favorite else de-favorite
+	if(!storyObj) return;
+	if(storyObj.favorite === false){
+		await currentUser.setFavorite(storyObj);
+		updateFavorites();
+		
+	}else{
+		await currentUser.deleteFavorite(storyObj);
+		// update storyList 
+		storyObj.favorite = false;
+		updateFavorites();
+
+	}
+
 })
+
+// Updates the star UI
+function updateFavoritesListUI(){
+	storyList.stories.forEach( story => {
+		story.favorite ? 
+			$(`#${story.storyId} i`).attr("class", "fas fa-star favorite-star") :
+			$(`#${story.storyId} i`).attr("class", "far fa-star favorite-star")
+	})
+}
+
+function updateFavorites(){
+	updateFavoritesList();
+	updateFavoritesListUI();
+}
+
+// TO DO 
+
+//// ISSA SPAGHETTI code  --- void 
+// // Upon start upon start up, sets favorite stars to solid 
+// function updateUserFavoritesUI(story) {
+// 	//console.debug('updateFavoritesUI');
+// 	// check each storie list
+// 	// $(`#${story.storyId} i`).attr("class","fas fa-star");
+// 	if (story.favorite === false){
+// 		$(`#${story.storyId} i`).attr("class", "far fa-star favorite-star")
+// 	}else{
+// 		$(`#${story.storyId} i`).attr("class", "fas fa-star favorite-star")
+// 	}
+// }
+
+
+
+
+// $($allStoriesList).on('click','.favorite-star',  async function(evt) {
+// 	const id = $(evt.target).attr('id');
+// 	// search for story containign story ID in story list
+// 	let storyObj = storyList.stories.find( story => story.storyId === id);
+// 	debugger;
+// 	storyObj.favorite === false ? currentUser.setFavorite(storyObj) :
+// 	currentUser.deleteFavorite(storyObj);
+// 	updateFavoritesList();
+// })

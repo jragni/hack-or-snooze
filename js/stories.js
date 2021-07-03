@@ -22,7 +22,10 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
 	//console.debug("generateStoryMarkup", story);
 	// add stars 
-	let star = `<i id=${story.storyId} class="favorite-star far fa-star"></i>`
+	let star = `<i id=${story.storyId} `
+	star += story.favorite ? 
+		`class="favorite-star fas fa-star"></i>` :
+		`class="favorite-star far fa-star"></i>`;
 	
 	const hostName = story.getHostName();
 	return $(`

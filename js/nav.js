@@ -61,8 +61,8 @@ $navFavorites.on('click',displayFavoritesPage);
 
 function displayFavoritesPage() {
 	$allStoriesList.empty();
-	console.debug('navFavorites')
-  updateFavoritesList();
+	console.debug('navFavorites');
+  updateFavorites();
   $('#story-form').hide();
 	if(currentUser.favorites.length === 0){
 		displayNoFavorites();
@@ -75,8 +75,7 @@ function displayFavorites() {
 	currentUser.favorites.forEach(story => {
 		const $story = generateStoryMarkup(story);
 		$allStoriesList.prepend($story);
-    updateFavoritesList();
-	})
+	});
 }
 
 function displayNoFavorites() {
